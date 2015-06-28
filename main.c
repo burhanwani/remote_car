@@ -31,7 +31,7 @@ void initHw()
 	// Note UART on port A must use APB
 	SYSCTL_GPIOHBCTL_R = 0;
 
-	// Enable GPIO port A and F and C peripherals
+	// Enable GPIO port E, B and D peripherals
 	SYSCTL_RCGC2_R = SYSCTL_RCGC2_GPIOE |SYSCTL_RCGC2_GPIOB|SYSCTL_RCGC2_GPIOD;
 
 
@@ -48,23 +48,21 @@ void initHw()
 	        __asm(" NOP");
 	        SYSCTL_SRPWM_R = SYSCTL_SRPWM_R0;                // reset PWM0 module
 	        SYSCTL_SRPWM_R = 0;                              // leave reset state
-	       // PWM0_1_CTL_R = 0;                                // turn-off PWM0 generator 1
+	   
 	        PWM0_2_CTL_R = 0;                                // turn-off PWM0 generator 2
-	      //  PWM0_1_GENB_R = PWM_0_GENB_ACTCMPBD_ZERO | PWM_0_GENB_ACTLOAD_ONE;
-	                                                         // output 3 on PWM0, gen 1b, cmpb
+	   
 	        PWM0_2_GENA_R = PWM_0_GENA_ACTCMPAD_ZERO | PWM_0_GENA_ACTLOAD_ONE;
 	                                                         // output 4 on PWM0, gen 2a, cmpa
 	        PWM0_2_GENB_R = PWM_0_GENB_ACTCMPBD_ZERO | PWM_0_GENB_ACTLOAD_ONE;
 	                                                         // output 5 on PWM0, gen 2b, cmpb
-	       // PWM0_1_LOAD_R = 1024;                            // set period to 40 MHz sys clock / 2 / 1024 = 19.53125 kHz
-	        PWM0_2_LOAD_R = 1024;
+            PWM0_2_LOAD_R = 1024; // set period to 40 MHz sys clock / 2 / 1024 = 19.53125 kHz
+
 	        PWM0_INVERT_R =  PWM_INVERT_PWM4INV | PWM_INVERT_PWM5INV;
 	                                                         // invert outputs for duty cycle increases with increasing compare values
-	       // PWM0_1_CMPB_R = 0;                               // red off (0=always low, 1023=always high)
-	        PWM0_2_CMPB_R = 0;                               // green off
-	        PWM0_2_CMPA_R = 0;                               // blue off
+	                                                        // (0=always low, 1023=always high)
+	        PWM0_2_CMPB_R = 0;
+	        PWM0_2_CMPA_R = 0;
 
-	       // PWM0_1_CTL_R = PWM_0_CTL_ENABLE;                 // turn-on PWM0 generator 1
 	        PWM0_2_CTL_R = PWM_0_CTL_ENABLE;                 // turn-on PWM0 generator 2
 	        PWM0_ENABLE_R =  PWM_ENABLE_PWM4EN | PWM_ENABLE_PWM5EN;
 
