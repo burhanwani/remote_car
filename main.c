@@ -1,3 +1,5 @@
+//copyright Burhan wani
+//
 #include <stdint.h>
 #include <stdbool.h>
 #include<string.h>
@@ -7,9 +9,6 @@
 #define MOTOR2_L  (*((volatile uint32_t *)(0x42000000 + (0x400053FC-0x40000000)*32 + 3*4)))//pb3
 #define MOTOR2_H  (*((volatile uint32_t *)(0x42000000 + (0x400053FC-0x40000000)*32 + 4*4)))//pb4
 
-#define ENTER_CRITICAL_SECTION NVIC_DIS1_R  |= 1<<1;
-
-#define EXIT_CRITICAL_SECTION NVIC_EN1_R |= 1<<1;
 
 char value;
 int task;
@@ -122,16 +121,7 @@ void Scheduler()
 
 	if(value=='f')
 	{
-/*
-		if(prev=='b')
-		{
-			PWM0_2_CMPA_R = 600 ;
-			PWM0_2_CMPB_R = 600;
-			waitMicrosecond(500000);
-		}
-		*/
-		//ENTER_CRITICAL_SECTION;
-		//waitMicrosecond(100000);
+
 		prev=value;
 		MOTOR1_L = 0;
 		MOTOR1_H = 1;
@@ -146,19 +136,11 @@ void Scheduler()
 
 		PWM0_2_CMPA_R = loadval ;
 		PWM0_2_CMPB_R = loadval;
-		//EXIT_CRITICAL_SECTION;
+	
 	}
 
 	else if (value== 'b')
-	{/*
-		if(prev=='f')
-		{
-			PWM0_2_CMPA_R = 600 ;
-			PWM0_2_CMPB_R = 600;
-			waitMicrosecond(500000);
-		}
-		*/
-		//ENTER_CRITICAL_SECTION;
+	{
 		prev=value;
 		MOTOR1_L = 1;
 		MOTOR1_H = 0;
@@ -172,11 +154,11 @@ void Scheduler()
 				}
 		PWM0_2_CMPA_R = loadval ;
 		PWM0_2_CMPB_R = loadval;
-		//EXIT_CRITICAL_SECTION;
+
 	}
 	else if(value== 'l')
 	{
-		//ENTER_CRITICAL_SECTION;
+		//;
 		prev=value;
 		MOTOR1_L = 1;
 		MOTOR1_H = 0;
@@ -191,12 +173,12 @@ void Scheduler()
 		PWM0_2_CMPB_R = 900;
 		waitMicrosecond(3000000);
 		value='f';
-		//EXIT_CRITICAL_SECTION;
+		
 
 	}
 	else if(value== 'r')
 	{
-		//ENTER_CRITICAL_SECTION;
+		
 		prev=value;
 		MOTOR1_L = 0;
 		MOTOR1_H = 1;
@@ -207,43 +189,38 @@ void Scheduler()
 					loadval=800;
 					flag=0;
 				}
-		//waitMicrosecond(10000);
+	
 		PWM0_2_CMPA_R = 1000 ;
-		//waitMicrosecond(10000);
+	
 		PWM0_2_CMPB_R = 900;
 		waitMicrosecond(3000000);
 		value='f';
-		//EXIT_CRITICAL_SECTION;
+	
 
 	}
 
 	else if(value== 'm')
 	{
-		//ENTER_CRITICAL_SECTION;
+		
 		value=prev;
 		loadval-=50;
 		if (loadval<0)
 		loadval=0;
-		//EXIT_CRITICAL_SECTION;
+	
 	}
 	else if(value== 'p')
 	{
-		//ENTER_CRITICAL_SECTION;
-		//waitMicrosecond(10000);
 		value=prev;
 		loadval+=50;
 		if(loadval>1023)
 		loadval=1023;
-		//EXIT_CRITICAL_SECTION;
+		
 	}
 	else if(value== 's')
 	{
-		//ENTER_CRITICAL_SECTION;
-		//value=prev;
 		PWM0_2_CMPA_R = 0 ;
 		PWM0_2_CMPB_R = 0;
 		flag=1;
-		//EXIT_CRITICAL_SECTION;
 	}
 
 
